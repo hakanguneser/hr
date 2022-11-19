@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @SuperBuilder
 @Entity
@@ -23,5 +20,8 @@ public class DepartmentEntity extends AbstractEntityBase {
 
     @Column(length = 100, nullable = false)
     private String name;
-    private Integer managerId;
+
+    @OneToOne
+    @JoinColumn(name = "manager_id",referencedColumnName = "id")
+    private EmployeeEntity manager;
 }
