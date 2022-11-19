@@ -14,3 +14,17 @@ create table EMPLOYEES
     updated_by int
 );
 create sequence SEQ_EMPLOYEE;
+
+--changeset nvoxland:2
+create table DEPARTMENTS
+(
+    id         int primary key,
+    name       varchar(100) not null,
+    manager_id int,
+    created_at date,
+    created_by int,
+    updated_at date,
+    updated_by int
+);
+
+create sequence SEQ_DEPARTMENT;
