@@ -19,33 +19,27 @@ class DepartmentRepositoryTest {
 
     @Autowired
     private DepartmentRepository underTest;
-    @Autowired
-    private EmployeeRepository employeeRepository;
 
     @Test
     public void itShouldSelectNewDepartmentById() {
-        int departmentId = 1;
-
-        EmployeeEntity employee = new EmployeeEntity();
-        employee.setDepartmentId(departmentId);
-        employee.setPassword("123");
-        employee.setEmail("mail@mail.com");
-        employee.setFullName("hakan");
-
-        DepartmentEntity department = new DepartmentEntity();
-        department.setId(departmentId);
-        department.setName("Human&Resources");
-        department.setManager(employee);
-
-        employeeRepository.save(employee);
+        //Given employee entity
+        EmployeeEntity employee = EmployeeEntity.builder()
+                .password("123")
+                .departmentId(123)
+                .email("mail@mail.com").build();
+        // ... department entity
+        DepartmentEntity department = DepartmentEntity.builder()
+                .name("Human&Resources")
+                .manager(employee)
+                .build();
+        //When
         DepartmentEntity savedDepartment = underTest.save(department);
-
-        Optional<DepartmentEntity> foundDepartment = underTest.findById(departmentId);
+        //Then
+        Optional<DepartmentEntity> foundDepartment = underTest.findById(savedDepartment.getId());
 
         assertThat(foundDepartment.get())
                 .isNotNull()
                 .usingRecursiveComparison()
-                .ignoringFields("createdAt", "createdBy", "updatedAt", "updatedBy")
                 .isEqualTo(savedDepartment);
     }
 }

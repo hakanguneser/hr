@@ -3,6 +3,7 @@ package com.avinty.hr.model.entity.base;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,6 +20,7 @@ import java.util.Date;
 @SuperBuilder(toBuilder = true)
 @Getter
 @Setter
+@ToString
 public abstract class AbstractEntityBase {
 
     @Id

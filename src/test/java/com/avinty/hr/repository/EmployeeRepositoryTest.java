@@ -4,15 +4,7 @@ import com.avinty.hr.model.entity.EmployeeEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,22 +21,22 @@ class EmployeeRepositoryTest {
 
     @Test
     public void itShouldSelectNewEmployeeById() {
-        EmployeeEntity employeeEntity = new EmployeeEntity();
-        int id = 1;
-        employeeEntity.setId(id);
-        employeeEntity.setEmail("hakan@mail.com");
-        employeeEntity.setPassword("123");
-        employeeEntity.setFullName("hakan");
-        employeeEntity.setDepartmentId(123);
+        //Given employee entity
+        EmployeeEntity employee = EmployeeEntity.builder()
+                .email("mail@mail.com")
+                .password("123")
+                .fullName("fullname")
+                .departmentId(123)
+                .build();
+        //When
+        EmployeeEntity savedEmployee = underTest.save(employee);
 
-        EmployeeEntity savedEmployee = underTest.save(employeeEntity);
-
-        Optional<EmployeeEntity> foundEmployee = underTest.findById(id);
+        //Then
+        Optional<EmployeeEntity> foundEmployee = underTest.findById(savedEmployee.getId());
 
         assertThat(foundEmployee.get())
                 .isNotNull()
                 .usingRecursiveComparison()
-                .ignoringFields("createdAt","createdBy","updatedAt","updatedBy")
                 .isEqualTo(savedEmployee);
     }
 

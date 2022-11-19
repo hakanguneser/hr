@@ -4,6 +4,7 @@ import com.avinty.hr.model.entity.base.AbstractEntityBase;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Table(name = "employees")
 @Getter
 @Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "SEQ_EMPLOYEE")
 public class EmployeeEntity extends AbstractEntityBase {
