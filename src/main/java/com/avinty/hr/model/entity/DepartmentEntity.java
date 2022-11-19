@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @SuperBuilder
 @Entity
-@Table
+@Table(name = "departments")
 @Getter
 @Setter
 @NoArgsConstructor
