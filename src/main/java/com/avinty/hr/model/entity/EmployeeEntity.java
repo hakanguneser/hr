@@ -1,6 +1,7 @@
 package com.avinty.hr.model.entity;
 
 import com.avinty.hr.model.entity.base.AbstractEntityBase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,5 +28,6 @@ public class EmployeeEntity extends AbstractEntityBase {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="dep_id", nullable=false)
+    @JsonIgnore
     private DepartmentEntity department;
 }

@@ -2,6 +2,7 @@ package com.avinty.hr.model.entity;
 
 
 import com.avinty.hr.model.entity.base.AbstractEntityBase;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,5 +24,6 @@ public class DepartmentEntity extends AbstractEntityBase {
 
     @OneToOne
     @JoinColumn(name = "manager_id",referencedColumnName = "id")
+    @JsonIgnore
     private EmployeeEntity manager;
 }
