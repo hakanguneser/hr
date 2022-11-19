@@ -25,7 +25,7 @@ class DepartmentRepositoryTest {
         //Given employee entity
         EmployeeEntity employee = EmployeeEntity.builder()
                 .password("123")
-                .departmentId(123)
+                .department(new DepartmentEntity())
                 .email("mail@mail.com").build();
         // ... department entity
         DepartmentEntity department = DepartmentEntity.builder()

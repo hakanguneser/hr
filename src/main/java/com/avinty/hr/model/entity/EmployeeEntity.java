@@ -25,6 +25,7 @@ public class EmployeeEntity extends AbstractEntityBase {
     @Column(length = 200, nullable = false)
     private String fullName;
 
-    @Column(name="dep_id")
-    private Integer departmentId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="dep_id", nullable=false)
+    private DepartmentEntity department;
 }
