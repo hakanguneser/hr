@@ -9,15 +9,16 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 class DepartmentServiceTest {
 
@@ -28,8 +29,10 @@ class DepartmentServiceTest {
 
     private DepartmentMapper departmentMapper = Mappers.getMapper(DepartmentMapper.class);
 
-    DepartmentEntity departmentSlytherin, departmentGryffindor;
-    EmployeeEntity employee1, employee2, employee3;
+    @Captor
+    private ArgumentCaptor<DepartmentEntity> departmentEntityArgumentCaptor;
+    DepartmentEntity departmentEntitySlytherin, departmentEntityGryffindor;
+    EmployeeEntity employeeEntitySeverus, employeeEntityHarry, employeeEntityTom;
 
     @BeforeEach
     void setUp() {
@@ -37,38 +40,38 @@ class DepartmentServiceTest {
         MockitoAnnotations.openMocks(this);
         underTest = new DepartmentService(departmentRepository);
 
-        departmentSlytherin = DepartmentEntity.builder().id(1).name("Slytherin").build();
-        departmentGryffindor = DepartmentEntity.builder().id(2).name("Gryffindor").build();
+        departmentEntitySlytherin = DepartmentEntity.builder().id(1).name("Slytherin").build();
+        departmentEntityGryffindor = DepartmentEntity.builder().id(2).name("Gryffindor").build();
 
-        employee1 = EmployeeEntity.builder()
+        employeeEntitySeverus = EmployeeEntity.builder()
                 .id(1)
                 .email("severus@hogwarts.com")
                 .password("11")
                 .fullName("Severus Snape")
-                .department(departmentSlytherin)
+                .department(departmentEntitySlytherin)
                 .build();
-        employee2 = EmployeeEntity.builder()
+        employeeEntityHarry = EmployeeEntity.builder()
                 .id(2)
                 .email("harry@hogwarts.com")
                 .password("22")
                 .fullName("Harry Potter")
-                .department(departmentGryffindor)
+                .department(departmentEntityGryffindor)
                 .build();
-        employee3 = EmployeeEntity.builder()
+        employeeEntityTom = EmployeeEntity.builder()
                 .id(3)
                 .email("tom@hogwarts.com")
                 .password("33")
                 .fullName("Tom Riddle")
-                .department(departmentSlytherin)
+                .department(departmentEntitySlytherin)
                 .build();
 
-        departmentGryffindor.setManager(employee2);
-        departmentSlytherin.setManager(employee3);
+        departmentEntityGryffindor.setManager(employeeEntityHarry);
+        departmentEntitySlytherin.setManager(employeeEntityTom);
     }
     @Test
     void itShouldFindAll() {
         //Given
-        List<DepartmentEntity> departmentList = Arrays.asList(departmentGryffindor,departmentSlytherin);
+        List<DepartmentEntity> departmentList = Arrays.asList(departmentEntityGryffindor, departmentEntitySlytherin);
         given(departmentRepository.findAll()).willReturn(departmentList);
         //When
         List<DepartmentDTO> allReturnedDepartmentList = underTest.findAll();
@@ -76,7 +79,22 @@ class DepartmentServiceTest {
         Assertions.assertThat(allReturnedDepartmentList)
                 .isNotNull()
                 .hasSize(departmentList.size())
-                .contains(departmentMapper.EntityToDTO(departmentGryffindor),
-                          departmentMapper.EntityToDTO(departmentSlytherin));
+                .contains(departmentMapper.EntityToDTO(departmentEntityGryffindor),
+                          departmentMapper.EntityToDTO(departmentEntitySlytherin));
+    }
+
+    @Test
+    void itShouldSaveDepartment(){
+        //Given
+        DepartmentDTO departmentDTO = departmentMapper.EntityToDTO(departmentEntitySlytherin);
+        //When
+        underTest.save(departmentDTO);
+        //Then
+        then(departmentRepository).should().save(departmentEntityArgumentCaptor.capture());
+        String departmentEntityCapturedValue = departmentEntityArgumentCaptor.getValue().getName();
+
+        Assertions.assertThat(departmentEntityCapturedValue)
+                .isNotNull()
+                .isEqualTo(departmentDTO.getName());
     }
 }

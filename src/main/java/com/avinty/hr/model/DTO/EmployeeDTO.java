@@ -1,5 +1,6 @@
 package com.avinty.hr.model.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,5 +14,6 @@ public class EmployeeDTO implements Serializable {
     private final String email;
     private final String password;
     private final String fullName;
+    @JsonIgnore
     private final DepartmentDTO department;
 }

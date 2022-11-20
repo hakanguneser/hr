@@ -4,9 +4,7 @@ import com.avinty.hr.model.DTO.DepartmentDTO;
 import com.avinty.hr.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +18,11 @@ public class DepartmentController {
     @GetMapping("/all")
     public ResponseEntity<List<DepartmentDTO>> findAll() {
         return ResponseEntity.ok(departmentService.findAll());
+    }
+
+    @PostMapping
+    public ResponseEntity save(@RequestBody DepartmentDTO departmentDTO) {
+        departmentService.save(departmentDTO);
+        return ResponseEntity.ok().build();
     }
 }

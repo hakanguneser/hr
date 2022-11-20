@@ -23,6 +23,8 @@ class EmployeeServiceTest {
     private EmployeeMapper employeeMapper = Mappers.getMapper(EmployeeMapper.class);
     @Mock
     private EmployeeRepository employeeRepository;
+    @Mock
+    private DepartmentService departmentService;
 
     DepartmentEntity departmentSlytherin, departmentGryffindor;
     EmployeeEntity employee1, employee2, employee3;
@@ -31,7 +33,7 @@ class EmployeeServiceTest {
     void setUp() {
 
         MockitoAnnotations.openMocks(this);
-        underTest = new EmployeeService(employeeRepository);
+        underTest = new EmployeeService(employeeRepository,departmentService);
 
         departmentSlytherin = DepartmentEntity.builder().id(1).name("Slytherin").build();
         departmentGryffindor = DepartmentEntity.builder().id(2).name("Gryffindor").build();

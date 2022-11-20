@@ -2,6 +2,7 @@ package com.avinty.hr.mapper;
 
 import com.avinty.hr.model.DTO.EmployeeDTO;
 import com.avinty.hr.model.entity.EmployeeEntity;
+import com.avinty.hr.model.request.EmployeeRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -18,4 +19,5 @@ public interface EmployeeMapper {
     })
     EmployeeDTO EntityToDTO(EmployeeEntity employeeEntity);
 
+    EmployeeEntity RequestToEntity(EmployeeRequest employeeRequest);
 }
