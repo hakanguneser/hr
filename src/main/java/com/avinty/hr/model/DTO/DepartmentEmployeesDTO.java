@@ -6,18 +6,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import java.util.List;
 
-/**
- * A DTO for the {@link com.avinty.hr.model.entity.DepartmentEntity} entity
- */
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class DepartmentDTO implements Serializable {
+@JsonInclude(Include.NON_NULL)
+public class DepartmentEmployeesDTO {
     private Integer id;
     private String name;
     private EmployeeDTO manager;
+    private List<EmployeeDTO> employees;
 }

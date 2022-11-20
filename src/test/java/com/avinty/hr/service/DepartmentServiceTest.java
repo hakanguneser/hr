@@ -29,6 +29,8 @@ class DepartmentServiceTest {
 
     @Mock
     private DepartmentRepository departmentRepository;
+    @Mock
+    private EmployeeService employeeService;
 
     private DepartmentMapper departmentMapper = Mappers.getMapper(DepartmentMapper.class);
 
@@ -41,7 +43,7 @@ class DepartmentServiceTest {
     void setUp() {
 
         MockitoAnnotations.openMocks(this);
-        underTest = new DepartmentService(departmentRepository);
+        underTest = new DepartmentService(departmentRepository,employeeService);
 
         departmentEntitySlytherin = DepartmentEntity.builder().id(1).name("Slytherin").build();
         departmentEntityGryffindor = DepartmentEntity.builder().id(2).name("Gryffindor").build();
