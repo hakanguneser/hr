@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "employees")
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString
 @NoArgsConstructor
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "SEQ_EMPLOYEE")
 public class EmployeeEntity extends AbstractEntityBase {

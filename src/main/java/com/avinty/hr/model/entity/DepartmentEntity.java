@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @Table(name = "departments")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @SequenceGenerator(allocationSize = 1, name = "idgen", sequenceName = "SEQ_DEPARTMENT")
 public class DepartmentEntity extends AbstractEntityBase {

@@ -1,5 +1,6 @@
 package com.avinty.hr.service;
 
+import com.avinty.hr.exception.EntityNotFoundException;
 import com.avinty.hr.mapper.DepartmentMapper;
 import com.avinty.hr.model.DTO.DepartmentDTO;
 import com.avinty.hr.model.entity.DepartmentEntity;
@@ -16,7 +17,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -64,12 +67,14 @@ class DepartmentServiceTest {
                 .fullName("Tom Riddle")
                 .department(departmentEntitySlytherin)
                 .build();
-
+        departmentEntityGryffindor.setName("Gryfindor");
+        departmentEntityGryffindor.setId(2);
         departmentEntityGryffindor.setManager(employeeEntityHarry);
         departmentEntitySlytherin.setManager(employeeEntityTom);
     }
+
     @Test
-    void itShouldFindAll() {
+    void itShould_FindAllDepartment() {
         //Given
         List<DepartmentEntity> departmentList = Arrays.asList(departmentEntityGryffindor, departmentEntitySlytherin);
         given(departmentRepository.findAll()).willReturn(departmentList);
@@ -80,11 +85,11 @@ class DepartmentServiceTest {
                 .isNotNull()
                 .hasSize(departmentList.size())
                 .contains(departmentMapper.EntityToDTO(departmentEntityGryffindor),
-                          departmentMapper.EntityToDTO(departmentEntitySlytherin));
+                        departmentMapper.EntityToDTO(departmentEntitySlytherin));
     }
 
     @Test
-    void itShouldSaveDepartment(){
+    void itShould_SaveDepartment() {
         //Given
         DepartmentDTO departmentDTO = departmentMapper.EntityToDTO(departmentEntitySlytherin);
         //When
@@ -96,5 +101,34 @@ class DepartmentServiceTest {
         Assertions.assertThat(departmentEntityCapturedValue)
                 .isNotNull()
                 .isEqualTo(departmentDTO.getName());
+    }
+
+    @Test
+    void itShould_throwErrorWhenDepartmentNotFound() {
+        //Given
+        Integer departmentId = 1;
+        given(departmentRepository.findById(departmentId)).willReturn(Optional.ofNullable(null));
+        //When
+        //Then
+        assertThatThrownBy(() -> {
+            underTest.findById(departmentId);
+        })
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining(String.format("Department Not Found departmentId : %s", departmentId));
+    }
+
+    @Test
+    void itShould_findDepartmentById() {
+        //Given
+        Integer departmentId = departmentEntityGryffindor.getId();
+        DepartmentDTO expectedValue = departmentMapper.EntityToDTO(departmentEntityGryffindor);
+        given(departmentRepository.findById(departmentId)).willReturn(Optional.of(departmentEntityGryffindor));
+        //When
+        DepartmentDTO actualReturnVal = underTest.findById(departmentId);
+        //Then
+        Assertions.assertThat(actualReturnVal)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .isEqualTo(expectedValue);
     }
 }

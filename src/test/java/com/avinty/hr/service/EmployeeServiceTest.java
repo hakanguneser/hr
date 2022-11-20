@@ -4,11 +4,14 @@ import com.avinty.hr.mapper.EmployeeMapper;
 import com.avinty.hr.model.DTO.EmployeeDTO;
 import com.avinty.hr.model.entity.DepartmentEntity;
 import com.avinty.hr.model.entity.EmployeeEntity;
+import com.avinty.hr.model.request.EmployeeRequest;
 import com.avinty.hr.repository.EmployeeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -16,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 class EmployeeServiceTest {
 
@@ -25,9 +29,10 @@ class EmployeeServiceTest {
     private EmployeeRepository employeeRepository;
     @Mock
     private DepartmentService departmentService;
-
+    @Captor
+    private ArgumentCaptor<EmployeeEntity> employeeEntityArgumentCaptor;
     DepartmentEntity departmentSlytherin, departmentGryffindor;
-    EmployeeEntity employee1, employee2, employee3;
+    EmployeeEntity employeeEntitySeverus, employeeEntityHarry, employeeEntityTom;
 
     @BeforeEach
     void setUp() {
@@ -37,35 +42,35 @@ class EmployeeServiceTest {
 
         departmentSlytherin = DepartmentEntity.builder().id(1).name("Slytherin").build();
         departmentGryffindor = DepartmentEntity.builder().id(2).name("Gryffindor").build();
-        employee1 = EmployeeEntity.builder()
+        employeeEntitySeverus = EmployeeEntity.builder()
                 .id(1)
                 .email("severus@hogwarts.com")
                 .password("11")
                 .fullName("Severus Snape")
                 .department(departmentSlytherin)
                 .build();
-        employee2 = EmployeeEntity.builder()
+        employeeEntityHarry = EmployeeEntity.builder()
                 .id(2)
                 .email("harry@hogwarts.com")
                 .password("22")
                 .fullName("Harry Potter")
                 .department(departmentGryffindor)
                 .build();
-        employee3 = EmployeeEntity.builder()
+        employeeEntityTom = EmployeeEntity.builder()
                 .id(3)
                 .email("tom@hogwarts.com")
                 .password("33")
                 .fullName("Tom Riddle")
                 .department(departmentSlytherin)
                 .build();
-        departmentGryffindor.setManager(employee2);
-        departmentSlytherin.setManager(employee3);
+        departmentGryffindor.setManager(employeeEntityHarry);
+        departmentSlytherin.setManager(employeeEntityTom);
     }
 
     @Test
-    void itShouldFindAll() {
+    void itShould_FindAll() {
         //Given saved employees
-        List<EmployeeEntity> employeeList = Arrays.asList(employee1, employee2, employee3);
+        List<EmployeeEntity> employeeList = Arrays.asList(employeeEntitySeverus, employeeEntityHarry, employeeEntityTom);
 
         given(employeeRepository.findAll()).willReturn(employeeList);
         //When
@@ -74,8 +79,31 @@ class EmployeeServiceTest {
         Assertions.assertThat(allReturnedEmployeeList)
                 .isNotNull()
                 .hasSize(3)
-                .contains(employeeMapper.EntityToDTO(employee1),
-                        employeeMapper.EntityToDTO(employee2),
-                        employeeMapper.EntityToDTO(employee3));
+                .contains(employeeMapper.EntityToDTO(employeeEntitySeverus),
+                        employeeMapper.EntityToDTO(employeeEntityHarry),
+                        employeeMapper.EntityToDTO(employeeEntityTom));
+    }
+
+    @Test
+    void itShould_saveEmployee() {
+        //Given saved employees
+        EmployeeRequest request = EmployeeRequest.builder()
+                .departmentId(departmentGryffindor.getId())
+                .email(employeeEntityHarry.getEmail())
+                .fullName(employeeEntityHarry.getFullName())
+                .password(employeeEntityHarry.getPassword())
+                .build();
+        given(departmentService.findEntityById(departmentGryffindor.getId()))
+                .willReturn(departmentGryffindor);
+        //When
+        underTest.save(request);
+        //Then
+        then(employeeRepository).should().save(employeeEntityArgumentCaptor.capture());
+
+        String value = employeeEntityArgumentCaptor.getValue().getEmail();
+
+        Assertions.assertThat(value)
+                .isNotNull()
+                .isEqualTo(request.getEmail());
     }
 }

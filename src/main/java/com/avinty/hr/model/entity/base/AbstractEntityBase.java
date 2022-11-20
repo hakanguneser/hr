@@ -20,7 +20,6 @@ import java.util.Date;
 @SuperBuilder(toBuilder = true)
 @Getter
 @Setter
-@ToString
 public abstract class AbstractEntityBase {
 
     @Id

@@ -40,7 +40,7 @@ public class DepartmentService {
     public DepartmentEntity findEntityById(Integer departmentId) {
         return departmentRepository.findById(departmentId)
                 .orElseThrow(() -> {
-                    throw new EntityNotFoundException("department Not Found");
+                    throw new EntityNotFoundException(String.format("Department Not Found departmentId : %s", departmentId));
                 });
     }
 }
