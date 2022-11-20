@@ -9,12 +9,12 @@ import org.mapstruct.Mappings;
 @Mapper
 public interface EmployeeMapper {
     @Mappings({
-            @Mapping(target = "department", ignore = true)
+            @Mapping(target = "department.manager.department", ignore = true)
     })
     EmployeeEntity DTOToEntity(EmployeeDTO employeeDTO);
 
     @Mappings({
-            @Mapping(target = "department", ignore = true)
+            @Mapping(target = "department.manager.department", ignore = true)
     })
     EmployeeDTO EntityToDTO(EmployeeEntity employeeEntity);
 

@@ -11,12 +11,14 @@ import org.mapstruct.Mappings;
 @Mapper
 public interface DepartmentMapper {
     @Mappings({
-            @Mapping(target = "manager",source = "manager")
+            @Mapping(target = "manager.department.manager",ignore = true)
     })
     DepartmentEntity DTOToEntity(DepartmentDTO departmentDTO);
 
     @Mappings({
-            @Mapping(target = "manager",source = "manager")
+            @Mapping(target = "manager.department.manager",ignore = true)
     })
     DepartmentDTO EntityToDTO(DepartmentEntity departmentEntity);
+
+
 }
