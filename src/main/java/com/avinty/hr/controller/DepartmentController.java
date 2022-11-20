@@ -20,9 +20,14 @@ public class DepartmentController {
         return ResponseEntity.ok(departmentService.findAll());
     }
 
+    @GetMapping()
+    public ResponseEntity<List<DepartmentDTO>> findAllByNameLike(@RequestParam("name") String name){
+        return ResponseEntity.ok(departmentService.findAllByNameLike(name));
+    }
     @PostMapping
     public ResponseEntity save(@RequestBody DepartmentDTO departmentDTO) {
         departmentService.save(departmentDTO);
         return ResponseEntity.ok().build();
     }
+
 }

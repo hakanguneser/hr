@@ -131,4 +131,22 @@ class DepartmentServiceTest {
                 .usingRecursiveComparison()
                 .isEqualTo(expectedValue);
     }
+
+    @Test
+    void itShould_returnAllDepartmentsNameLike(){
+        //Given
+        String searchKey = "ff";
+        DepartmentEntity hufflepuff = DepartmentEntity.builder().id(3).name("Hufflepuff").build();
+        List<DepartmentEntity> returnValue = Arrays.asList(hufflepuff,departmentEntityGryffindor,departmentEntitySlytherin);
+
+        given(departmentRepository.findByNameContainsIgnoreCase(searchKey)).willReturn(returnValue);
+        //When
+        List<DepartmentDTO> allByNameLike = underTest.findAllByNameLike(searchKey);
+        //Then
+        Assertions.assertThat(allByNameLike)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .ignoringFields("manager")
+                .isEqualTo(returnValue);
+    }
 }

@@ -43,4 +43,10 @@ public class DepartmentService {
                     throw new EntityNotFoundException(String.format("Department Not Found departmentId : %s", departmentId));
                 });
     }
+
+    public List<DepartmentDTO> findAllByNameLike(String name) {
+        return departmentRepository.findByNameContainsIgnoreCase(name).stream()
+                .map(departmentMapper::EntityToDTO)
+                .collect(Collectors.toList());
+    }
 }
