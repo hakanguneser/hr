@@ -126,7 +126,7 @@ class DepartmentServiceTest {
         DepartmentDTO expectedValue = departmentMapper.EntityToDTO(departmentEntityGryffindor);
         given(departmentRepository.findById(departmentId)).willReturn(Optional.of(departmentEntityGryffindor));
         //When
-        DepartmentDTO actualReturnVal = underTest.findById(departmentId);
+         DepartmentDTO actualReturnVal = underTest.findById(departmentId);
         //Then
         Assertions.assertThat(actualReturnVal)
                 .isNotNull()

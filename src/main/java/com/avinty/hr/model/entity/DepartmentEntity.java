@@ -29,7 +29,7 @@ public class DepartmentEntity extends AbstractEntityBase {
 
     @OneToOne
     @JoinColumn(name = "manager_id",referencedColumnName = "id")
-    @JsonIgnore
+    @JsonBackReference
     @ToString.Exclude
     private EmployeeEntity manager;
 }

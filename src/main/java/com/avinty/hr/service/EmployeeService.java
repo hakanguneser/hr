@@ -1,9 +1,7 @@
 package com.avinty.hr.service;
 
 import com.avinty.hr.exception.EntityNotFoundException;
-import com.avinty.hr.mapper.DepartmentMapper;
 import com.avinty.hr.mapper.EmployeeMapper;
-import com.avinty.hr.model.DTO.DepartmentDTO;
 import com.avinty.hr.model.DTO.EmployeeDTO;
 import com.avinty.hr.model.entity.DepartmentEntity;
 import com.avinty.hr.model.entity.EmployeeEntity;
@@ -15,7 +13,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +37,7 @@ public class EmployeeService {
     public EmployeeDTO findById(Integer employeeId) {
         return employeeMapper.EntityToDTO(findEntityById(employeeId));
     }
+
     public EmployeeEntity findEntityById(Integer employeeId) {
         return employeeRepository.findById(employeeId).orElseThrow(() -> {
             throw new EntityNotFoundException(String.format("Employee Not Found employeeId : %s", employeeId));
@@ -53,9 +52,14 @@ public class EmployeeService {
         return employeeMapper.EntityToDTO(savedEmployee);
     }
 
-    public List<EmployeeDTO> findAllEmployeesInSameDepartment(Integer departmentId){
+    public List<EmployeeDTO> findAllEmployeesInSameDepartment(Integer departmentId) {
         return employeeRepository.findByDepartmentId(departmentId).stream()
                 .map(employeeMapper::EntityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateEmployeesDepartment(Integer oldDepartmentId, Integer newDepartmentId) {
+        employeeRepository.updateEmployeesDepartment(oldDepartmentId, newDepartmentId);
     }
 }

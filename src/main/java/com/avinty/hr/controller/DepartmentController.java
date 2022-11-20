@@ -30,4 +30,9 @@ public class DepartmentController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteById(@PathVariable Integer id){
+        departmentService.deleteById(id);
+        return ResponseEntity.accepted().build();
+    }
 }

@@ -4,7 +4,6 @@ import com.avinty.hr.exception.EntityNotFoundException;
 import com.avinty.hr.mapper.DepartmentMapper;
 import com.avinty.hr.model.DTO.DepartmentDTO;
 import com.avinty.hr.model.DTO.DepartmentEmployeesDTO;
-import com.avinty.hr.model.DTO.EmployeeDTO;
 import com.avinty.hr.model.entity.DepartmentEntity;
 import com.avinty.hr.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -64,5 +63,10 @@ public class DepartmentService {
                         .employees(employeeService.findAllEmployeesInSameDepartment(department.getId()))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public void deleteById(Integer id) {
+        employeeService.updateEmployeesDepartment(id, null);
+        departmentRepository.deleteById(id);
     }
 }

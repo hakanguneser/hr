@@ -31,7 +31,7 @@ public class EmployeeEntity extends AbstractEntityBase {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="dep_id", nullable=false)
-    @JsonIgnore
+    @JsonBackReference
     @ToString.Exclude
     private DepartmentEntity department;
 }
