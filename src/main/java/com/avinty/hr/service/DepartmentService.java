@@ -1,5 +1,6 @@
 package com.avinty.hr.service;
 
+import com.avinty.hr.exception.EntityNotFoundException;
 import com.avinty.hr.mapper.DepartmentMapper;
 import com.avinty.hr.model.DTO.DepartmentDTO;
 import com.avinty.hr.model.entity.DepartmentEntity;
@@ -39,7 +40,7 @@ public class DepartmentService {
     public DepartmentEntity findEntityById(Integer departmentId) {
         return departmentRepository.findById(departmentId)
                 .orElseThrow(() -> {
-                    throw new RuntimeException("department Not Found");
+                    throw new EntityNotFoundException("department Not Found");
                 });
     }
 }
