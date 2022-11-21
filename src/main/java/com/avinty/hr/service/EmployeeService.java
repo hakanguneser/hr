@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,8 +47,12 @@ public class EmployeeService {
 
     public EmployeeDTO save(EmployeeRequest request) {
         EmployeeEntity employeeEntity = employeeMapper.RequestToEntity(request);
-        DepartmentEntity departmentEntity = departmentService.findEntityById(request.getDepartmentId());
-        employeeEntity.setDepartment(departmentEntity);
+
+        if (Optional.ofNullable(request.getDepartmentId()).isPresent()) {
+            DepartmentEntity departmentEntity = departmentService.findEntityById(request.getDepartmentId());
+            employeeEntity.setDepartment(departmentEntity);
+        }
+
         EmployeeEntity savedEmployee = employeeRepository.save(employeeEntity);
         return employeeMapper.EntityToDTO(savedEmployee);
     }

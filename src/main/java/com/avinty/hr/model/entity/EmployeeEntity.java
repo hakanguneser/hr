@@ -28,9 +28,11 @@ public class EmployeeEntity extends AbstractEntityBase {
     private String password;
     @Column(length = 200, nullable = false)
     private String fullName;
+    @Column
+    private Boolean isActive;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="dep_id", nullable=false)
+    @JoinColumn(name="dep_id")
     @JsonBackReference
     @ToString.Exclude
     private DepartmentEntity department;

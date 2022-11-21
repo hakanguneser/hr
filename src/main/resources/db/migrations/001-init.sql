@@ -28,3 +28,6 @@ create table DEPARTMENTS
 );
 
 create sequence SEQ_DEPARTMENT;
+
+--changeset nvoxland:3
+ALTER TABLE EMPLOYEES ADD IS_ACTIVE BOOLEAN;

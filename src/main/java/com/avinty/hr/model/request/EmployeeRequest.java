@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,4 +16,5 @@ public class EmployeeRequest {
     private String password;
     private String fullName;
     private Integer departmentId;
+    private Boolean isActive;
 }
