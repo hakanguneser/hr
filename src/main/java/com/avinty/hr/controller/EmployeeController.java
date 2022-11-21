@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> save(@RequestBody EmployeeRequest request) {
+    public ResponseEntity<EmployeeDTO> save(@Valid @RequestBody EmployeeRequest request) {
         EmployeeDTO savedEmployee = employeeService.save(request);
         return ResponseEntity.ok(savedEmployee);
     }

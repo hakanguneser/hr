@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,7 @@ public class DepartmentController {
         return ResponseEntity.ok(departmentService.findAllByNameLike(name));
     }
     @PostMapping
-    public ResponseEntity save(@RequestBody DepartmentDTO departmentDTO) {
+    public ResponseEntity save(@Valid @RequestBody DepartmentDTO departmentDTO) {
         departmentService.save(departmentDTO);
         return ResponseEntity.ok().build();
     }

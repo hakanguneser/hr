@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -18,6 +20,8 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DepartmentDTO implements Serializable {
     private Integer id;
+    @NotNull
+    @Size(min = 3,max = 100,message = "department name has to be between min:3 max:100 characters")
     private String name;
     private EmployeeDTO manager;
 }
