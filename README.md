@@ -35,6 +35,12 @@ This is a *Java Restful API Service* that runs a hr application. This API allows
 * [Swagger](https://swagger.io) - Used to generate API docs & UI
 * [Mapstruct](https://mapstruct.org/) - Used to Model mapping
 
+
+# What next
+- unit test improvement
+- integration test implementation
+- JWT Security implementation
+
 ## Author
 
 [Hakan Guneser](https://github.com/hakanguneser)
