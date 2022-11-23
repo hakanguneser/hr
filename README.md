@@ -18,6 +18,10 @@ This is a *Java Restful API Service* that runs a hr application. This API allows
 ```
 ./mvnw spring-boot:run
 ```
+### deploy to docker
+```
+.\deploy-to-docker.sh
+```
 
 ## API documentation
 

@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+
+  app:
+    image: 'hr:latest'
+    build:
+      context: .
+    container_name: hr
+    ports:
+      - "8085:8085"
